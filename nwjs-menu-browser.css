@@ -1,0 +1,81 @@
+html, body {
+	margin: 0;
+	background-color: white;
+	height: 100%;
+}
+
+.contextmenu {
+	min-width: 100px;
+	min-height: 150px;
+	background-color: #eee;
+	position: fixed;
+	opacity: 0;
+	transition: opacity 250ms;
+	margin: 0;
+	padding: 5px 0;
+	list-style: none;
+	pointer-events: none;
+	border-radius: 8px;
+	border: 1pt rgba(191, 191, 191, 0.8) solid;
+	font-family: 'Helvetica Neue', sans-serif;
+	font-size: 11pt;
+	box-shadow: rgba(43, 43, 43, 0.34) 1px 1px 11px 0px;
+	color: #222621;
+}
+
+.contextmenu.show {
+	opacity: 1;
+	transition: opacity 30ms;
+	pointer-events: all;
+}
+
+.contextmenu.submenu {
+    transition: opacity 250ms;
+}
+
+.contextmenu.submenu.show {
+	transition: opacity 0ms;
+}
+
+.menu-item.normal {
+	cursor: default;
+	padding: 1px 0 2px;
+	box-sizing: border-box;
+	position: relative;
+	display: flex;
+}
+
+.menu-item.normal:hover,
+.menu-item.normal.submenu-active {
+	background-color: #499BFE;
+	color: #fff;
+}
+
+.menu-item.normal > div {
+    display: inline-flex;
+    align-items: center;
+}
+
+.menu-item.normal .icon {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 16px;
+    max-height: 16px;
+}
+
+li.menu-item.separator {
+	height: 2px;
+	background-color: rgba(128, 128, 128, 0.2);
+	margin: 6px 0;
+}
+
+.menu-item .modifiers,
+.menu-item .icon-wrap {
+	width: 20px;
+}
+
+.menu-item .modifiers {
+	box-sizing: border-box;
+	padding: 0 3px 0 0;
+	text-align: right;
+}
