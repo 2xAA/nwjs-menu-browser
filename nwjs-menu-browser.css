@@ -6,7 +6,6 @@ html, body {
 
 .contextmenu {
 	min-width: 100px;
-	min-height: 150px;
 	background-color: #eee;
 	position: fixed;
 	opacity: 0;
@@ -21,6 +20,10 @@ html, body {
 	font-size: 11pt;
 	box-shadow: rgba(43, 43, 43, 0.34) 1px 1px 11px 0px;
 	color: #222621;
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	user-select: none;
+	/* width: 100%; */
 }
 
 .contextmenu.show {
@@ -42,7 +45,9 @@ html, body {
 	padding: 1px 0 2px;
 	box-sizing: border-box;
 	position: relative;
-	display: flex;
+	display: grid;
+	grid-template-columns: 20px auto 20px;
+	width: 100%;
 }
 
 .menu-item.normal:hover,
@@ -52,8 +57,7 @@ html, body {
 }
 
 .menu-item.normal > div {
-    display: inline-flex;
-    align-items: center;
+    align-self: center;
 }
 
 .menu-item.normal .icon {
@@ -78,4 +82,18 @@ li.menu-item.separator {
 	box-sizing: border-box;
 	padding: 0 3px 0 0;
 	text-align: right;
+}
+
+.label {
+    padding: 0 20px 0 0;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+li.menu-item.normal.disabled {
+    color: #ababab;
+}
+
+li.menu-item.normal.disabled:hover {
+    background-color: transparent;
 }

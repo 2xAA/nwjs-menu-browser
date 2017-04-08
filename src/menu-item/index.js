@@ -1,7 +1,7 @@
-const Menu = require('../menu');
-const isDescendant = require('../is-decendant');
+import Menu from '../menu';
+import isDescendant from '../is-decendant';
 
-module.exports = class MenuItem {
+class MenuItem {
 	constructor(settings = {}) {
 		const modifiersEnum = ['cmd', 'command', 'super', 'shift', 'ctrl', 'alt'];
 		const typeEnum = ['separator', 'checkbox', 'normal'];
@@ -13,6 +13,7 @@ module.exports = class MenuItem {
 		if(submenu) {
 			submenu.parentMenuItem = this;
 		}
+
 
 		Object.defineProperty(this, 'type', {
 			get: () => {
@@ -64,7 +65,10 @@ module.exports = class MenuItem {
 		this.iconIsTemplate = settings.iconIsTemplate || false;
 		this.tooltip = settings.tooltip || '';
 		this.checked = settings.checked || false;
-		this.enabled = settings.enabled || true;
+
+		this.enabled = settings.enabled;
+		if(typeof settings.enabled === 'undefined') this.enabled = true;
+
 		this.key = settings.key || null;
 		this.node = null;
 
@@ -89,14 +93,21 @@ module.exports = class MenuItem {
 		}
 	}
 
+	_clickHandle_click() {
+		console.log(Boolean(this.submenu));
+
+		if(!this.enabled || this.submenu) return;
+		this.parentMenu.popdownAll();
+		if(this.click) this.click();
+	}
+
 	buildItem() {
 		let node = document.createElement('li');
 		node.classList.add('menu-item', this.type);
 
-		node.addEventListener('click', () => {
-			document.removeEventListener('click', this.parentMenu.clickHandler);
-			this.parentMenu.popdown();
-			if(this.click) this.click();
+		node.addEventListener('click', this._clickHandle_click.bind(this));
+		node.addEventListener('mouseup', (e) => {
+			if(e.button === 2) this._clickHandle_click();
 		});
 
 		let iconWrapNode = document.createElement('div');
@@ -121,14 +132,25 @@ module.exports = class MenuItem {
 			modifierNode.textContent = '▶︎';
 
 			node.addEventListener('mouseout', (e) => {
-				if(!isDescendant(node, e.target)) this.submenu.popdown();
-
+				if(node !== e.target) {
+					if(!isDescendant(node, e.target)) this.submenu.popdown();
+				}
 				node.classList.add('submenu-active');
 			});
 		}
 
-		node.addEventListener('mouseover', () => {
+		if(!this.enabled) {
+			node.classList.add('disabled');
+		}
+
+		node.addEventListener('mouseover', (e) => {
 			if(this.submenu) {
+				if(this.submenu.node) {
+					if(this.submenu.node.classList.contains('show')) {
+						return;
+					}
+				}
+
 				let parentNode = node.parentNode;
 
 				let x = parentNode.offsetWidth + parentNode.offsetLeft - 2;
@@ -151,4 +173,6 @@ module.exports = class MenuItem {
 		this.node = node;
 		return node;
 	}
-};
+}
+
+export default MenuItem;

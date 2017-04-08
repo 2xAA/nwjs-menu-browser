@@ -1,7 +1,7 @@
-const MenuItem = require('../menu');
-const isDescendant = require('../is-decendant');
+import MenuItem from '../menu-item';
+import isDescendant from '../is-decendant';
 
-module.exports = class Menu {
+class Menu {
 	constructor(settings = {}) {
 		const typeEnum = ['contextmenu', 'menubar'];
 		let items = [];
@@ -78,8 +78,9 @@ module.exports = class Menu {
 	}
 
 	_clickHandle_hideMenu(e) {
+		console.log('called', this.node, e.target);
 		if(e.target !== this.node && !isDescendant(this.node, e.target)) {
-			this.node.classList.remove('show');
+			if(this.node.classList.contains('show')) this.popdown();
 		}
 	}
 
@@ -89,7 +90,9 @@ module.exports = class Menu {
 	}
 
 	popup(x, y, submenu = false) {
+		console.log('popup called');
 		let menuNode;
+		let setRight = false;
 
 		if(this.node) {
 			menuNode = this.node;
@@ -110,29 +113,53 @@ module.exports = class Menu {
 		let height = menuNode.clientHeight;
 
 		if((x + width) > window.innerWidth) {
-			x = window.innerWidth - width;
+			setRight = true;
+			if(submenu) {
+				let node = this.parentMenu.node;
+				x = node.offsetWidth + ((window.innerWidth - node.offsetLeft) - node.offsetWidth) - 2;
+			} else {
+				x = 0;
+			}
 		}
 
 		if((y + height) > window.innerHeight) {
 			y = window.innerHeight - height;
 		}
 
-		menuNode.style.left = x + 'px';
+		if(!setRight) {
+			menuNode.style.left = x + 'px';
+			menuNode.style.right = 'auto';
+		} else {
+			menuNode.style.right = x + 'px';
+			menuNode.style.left = 'auto';
+		}
+
 		menuNode.style.top = y + 'px';
 		menuNode.classList.add('show');
 
-		document.addEventListener('click', this.clickHandler);
+		if(!submenu) document.addEventListener('click', this.clickHandler);
 	}
 
 	popdown() {
 		if(this.node) this.node.classList.remove('show');
+		document.removeEventListener('click', this.clickHandler);
 
 		this.items.forEach(item => {
 			if(item.submenu) {
-				item.node.classList.remove('submenu-active');
 				item.submenu.popdown();
 			}
 		});
+	}
+
+	popdownAll() {
+		let menu = this;
+		while(menu.parentMenu) {
+			if(menu.parentMenu) {
+				menu = menu.parentMenu;
+			}
+		}
+
+		menu.popdown();
 	}
 
 	buildMenu(submenu = false) {
@@ -141,9 +168,6 @@ module.exports = class Menu {
 
 		this.items.forEach(item => {
 			let itemNode = item.buildItem();
-			// if(item.submenu) {
-			// 	let submenuNode = item.submenu.buildMenu(true);
-			// }
 			menuNode.appendChild(itemNode);
 		});
 
@@ -155,4 +179,14 @@ module.exports = class Menu {
 		node.classList.add(this.type);
 		return node;
 	}
-};
+
+	get parentMenu() {
+		if(this.parentMenuItem) {
+			return this.parentMenuItem.parentMenu;
+		} else {
+			return undefined;
+		}
+	}
+}
+
+export default Menu;

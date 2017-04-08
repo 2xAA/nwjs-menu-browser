@@ -1,4 +1,7 @@
-module.exports = {
-	Menu: require('./menu'),
-	MenuItem: require('./menu-item')
+import Menu from './menu';
+import MenuItem from './menu-item';
+
+export {
+	Menu,
+	MenuItem
 };
