@@ -24,7 +24,10 @@ m.append(new MenuItem({
 
 m.append(new MenuItem({
 	label: 'Show bookmarks bar',
-	type: 'checkbox'
+	type: 'checkbox',
+	click: function() {
+		console.log(`Checked: ${this.checked}`);
+	}
 }));
 
 let sm = new Menu();

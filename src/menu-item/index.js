@@ -1,28 +1,6 @@
 import Menu from '../menu';
 import isDescendant from '../is-decendant';
-
-const modifierSymbols = {
-	shift: '⇧',
-	ctrl: '⌃',
-	alt: '⌥',
-	cmd: '⌘',
-	super: '⌘',
-	command: '⌘'
-};
-
-const keySymbols = {
-	up: '↑',
-	esc: '⎋',
-	tab: '⇥',
-	left: '←',
-	down: '↓',
-	right: '→',
-	pageUp: '⇞',
-	escape: '⎋',
-	pageDown: '⇟',
-	backspace: '⌫',
-	space: 'Space'
-};
+import { modifierSymbols, keySymbols } from '../symbols';
 
 class MenuItem {
 	constructor(settings = {}) {
@@ -120,11 +98,11 @@ class MenuItem {
 		if(!this.enabled || this.submenu) return;
 
 		this.parentMenu.popdownAll();
-		if(this.click) this.click();
 		if(this.type === 'checkbox') {
 			this.node.classList.toggle('checked');
 			this.checked = !this.checked;
 		}
+		if(this.click) this.click();
 	}
 
 	buildItem() {

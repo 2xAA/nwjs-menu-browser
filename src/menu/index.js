@@ -90,7 +90,6 @@ class Menu {
 	}
 
 	popup(x, y, submenu = false) {
-		console.log('popup called');
 		let menuNode;
 		let setRight = false;
 
