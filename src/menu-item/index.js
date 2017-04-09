@@ -1,6 +1,29 @@
 import Menu from '../menu';
 import isDescendant from '../is-decendant';
 
+const modifierSymbols = {
+	shift: '⇧',
+	ctrl: '⌃',
+	alt: '⌥',
+	cmd: '⌘',
+	super: '⌘',
+	command: '⌘'
+};
+
+const keySymbols = {
+	up: '↑',
+	esc: '⎋',
+	tab: '⇥',
+	left: '←',
+	down: '↓',
+	right: '→',
+	pageUp: '⇞',
+	escape: '⎋',
+	pageDown: '⇟',
+	backspace: '⌫',
+	space: 'Space'
+};
+
 class MenuItem {
 	constructor(settings = {}) {
 		const modifiersEnum = ['cmd', 'command', 'super', 'shift', 'ctrl', 'alt'];
@@ -94,11 +117,14 @@ class MenuItem {
 	}
 
 	_clickHandle_click() {
-		console.log(Boolean(this.submenu));
-
 		if(!this.enabled || this.submenu) return;
+
 		this.parentMenu.popdownAll();
 		if(this.click) this.click();
+		if(this.type === 'checkbox') {
+			this.node.classList.toggle('checked');
+			this.checked = !this.checked;
+		}
 	}
 
 	buildItem() {
@@ -122,14 +148,21 @@ class MenuItem {
 
 		let labelNode = document.createElement('div');
 		labelNode.classList.add('label');
-		labelNode.textContent = this.label;
 
 		let modifierNode = document.createElement('div');
 		modifierNode.classList.add('modifiers');
-		modifierNode.textContent = this.modifiers;
+
+		let checkmarkNode = document.createElement('div');
+		checkmarkNode.classList.add('checkmark');
+
+		if(this.checked) {
+			node.classList.add('checked');
+		}
+
+		let text = '';
 
 		if(this.submenu) {
-			modifierNode.textContent = '▶︎';
+			text = '▶︎';
 
 			node.addEventListener('mouseout', (e) => {
 				if(node !== e.target) {
@@ -137,6 +170,21 @@ class MenuItem {
 				}
 				node.classList.add('submenu-active');
 			});
+		}
+
+		if(this.modifiers) {
+			let mods = this.modifiers.split('+');
+
+			// Looping this way to keep order of symbols - required by macOS
+			for(let symbol in modifierSymbols) {
+				if(mods.indexOf(symbol) > -1) {
+					text += modifierSymbols[symbol];
+				}
+			}
+		}
+
+		if(this.key) {
+			text += this.key;
 		}
 
 		if(!this.enabled) {
@@ -166,9 +214,21 @@ class MenuItem {
 			}
 		});
 
-		node.appendChild(iconWrapNode);
+		if(this.icon) labelNode.appendChild(iconWrapNode);
+
+		let textLabelNode = document.createElement('span');
+		textLabelNode.textContent = this.label;
+		textLabelNode.classList.add('label-text');
+
+		node.appendChild(checkmarkNode);
+
+		labelNode.appendChild(textLabelNode);
 		node.appendChild(labelNode);
+
+		modifierNode.appendChild(document.createTextNode(text));
 		node.appendChild(modifierNode);
+
+		node.title = this.tooltip;
 
 		this.node = node;
 		return node;

@@ -6,17 +6,25 @@ m.append(new MenuItem({
 }));
 
 m.append(new MenuItem({
-	label: 'Log XMLHttpRequests'
+	icon: 'terminal.png',
+	label: 'Clear console',
+	modifiers: 'cmd+shift+alt',
+	key: 'D',
+	tooltip: 'This MenuItem actually does nothing!'
 }));
-m.append(new MenuItem({
-	label: 'Clear console'
-}));
+
 m.append(new MenuItem({
 	label: 'Clear console history'
 }));
+
 m.append(new MenuItem({
 	label: 'Save as...',
 	enabled: false
+}));
+
+m.append(new MenuItem({
+	label: 'Show bookmarks bar',
+	type: 'checkbox'
 }));
 
 let sm = new Menu();
@@ -56,11 +64,12 @@ let mi2 = new MenuItem({
 	submenu: sm2
 });
 
+sm.insert(mi2, 1);
+
 let mi3 = new MenuItem({
 	type: 'separator'
 });
 
-sm.insert(mi2, 1);
 sm.insert(mi3, 2);
 
 console.log(m, sm, sm2);

@@ -11,19 +11,16 @@ html, body {
 	opacity: 0;
 	transition: opacity 250ms;
 	margin: 0;
-	padding: 5px 0;
+	padding: 4px 0;
 	list-style: none;
 	pointer-events: none;
 	border-radius: 8px;
-	border: 1pt rgba(191, 191, 191, 0.8) solid;
+	border: 1px rgba(191, 191, 191, 0.8) solid;
 	font-family: 'Helvetica Neue', sans-serif;
-	font-size: 11pt;
+	font-size: 14px;
 	box-shadow: rgba(43, 43, 43, 0.34) 1px 1px 11px 0px;
 	color: #222621;
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none; /* Safari */
 	user-select: none;
-	/* width: 100%; */
 }
 
 .contextmenu.show {
@@ -40,24 +37,32 @@ html, body {
 	transition: opacity 0ms;
 }
 
-.menu-item.normal {
+.menu-item.normal,
+.menu-item.checkbox {
 	cursor: default;
 	padding: 1px 0 2px;
 	box-sizing: border-box;
 	position: relative;
-	display: grid;
-	grid-template-columns: 20px auto 20px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-content: stretch;
+	align-items: flex-start;
 	width: 100%;
 }
 
 .menu-item.normal:hover,
+.menu-item.checkbox:hover,
 .menu-item.normal.submenu-active {
 	background-color: #499BFE;
 	color: #fff;
 }
 
-.menu-item.normal > div {
+.menu-item.normal > div,
+.menu-item.checkbox > div {
     align-self: center;
+    vertical-align: middle;
 }
 
 .menu-item.normal .icon {
@@ -74,20 +79,33 @@ li.menu-item.separator {
 }
 
 .menu-item .modifiers,
-.menu-item .icon-wrap {
-	width: 20px;
+.menu-item .icon-wrap,
+.menu-item .checkmark {
+	/*width: 20px;*/
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
+}
+
+.menu-item .checkmark {
+	width: 22px;
 }
 
 .menu-item .modifiers {
 	box-sizing: border-box;
-	padding: 0 3px 0 0;
+	padding: 0 6px;
 	text-align: right;
+
+	order: 0;
+    flex: 0 0 auto;
+    align-self: center;
 }
 
-.label {
-    padding: 0 20px 0 0;
-    grid-column-start: 2;
-    grid-column-end: 3;
+.menu-item .label {
+    padding: 0 22px 0 0;
+    order: 0;
+    flex: 1 0 auto;
+    align-self: center;
 }
 
 li.menu-item.normal.disabled {
@@ -97,3 +115,15 @@ li.menu-item.normal.disabled {
 li.menu-item.normal.disabled:hover {
     background-color: transparent;
 }
+
+.icon-wrap {
+    padding: 0 6px 0 0;
+    display: inline-block;
+}
+
+span.label-text {
+    align-items: center;
+    vertical-align: middle;
+}
+
+.menu-item.checkbox.checked .checkmark::before {content: '✔';text-align: center;width: 100%;}
