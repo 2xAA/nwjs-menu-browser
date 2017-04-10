@@ -120,12 +120,14 @@ li.menu-item.separator {
     align-self: center;
 }
 
-.menu-item.normal.disabled,
-.menu-item.normal.disabled:hover {
+.menu-item.disabled,
+.menu-item.disabled:hover,
+.contextmenu .menu-item.disabled:hover {
     color: #ababab;
 }
 
-.menu-item.normal.disabled:hover {
+.menu-item.disabled:hover,
+.contextmenu .menu-item.disabled:hover {
     background-color: transparent;
 }
 

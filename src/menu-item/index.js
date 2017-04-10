@@ -14,6 +14,10 @@ class MenuItem extends EventEmitter2 {
 		let submenu = settings.submenu || null;
 		let click = settings.click || null;
 		let modifiers = validModifiers(settings.modifiers) ? settings.modifiers : null;
+		let label = settings.label || '';
+
+		let enabled = settings.enabled;
+		if(typeof settings.enabled === 'undefined') enabled = true;
 
 		if(submenu) {
 			submenu.parentMenuItem = this;
@@ -61,17 +65,34 @@ class MenuItem extends EventEmitter2 {
 			},
 			set: (inputModifiers) => {
 				modifiers = validModifiers(inputModifiers) ? inputModifiers : modifiers;
+				this.rebuild();
 			}
 		});
 
-		this.label = settings.label || '';
+		Object.defineProperty(this, 'enabled', {
+			get: () => {
+				return enabled;
+			},
+			set: (inputEnabled) => {
+				enabled = inputEnabled;
+				this.rebuild();
+			}
+		});
+
+		Object.defineProperty(this, 'label', {
+			get: () => {
+				return label;
+			},
+			set: (inputLabel) => {
+				label = inputLabel;
+				this.rebuild();
+			}
+		});
+
 		this.icon = settings.icon || null;
 		this.iconIsTemplate = settings.iconIsTemplate || false;
 		this.tooltip = settings.tooltip || '';
 		this.checked = settings.checked || false;
-
-		this.enabled = settings.enabled;
-		if(typeof settings.enabled === 'undefined') this.enabled = true;
 
 		this.key = settings.key || null;
 		this.node = null;
@@ -148,9 +169,12 @@ class MenuItem extends EventEmitter2 {
 		}
 	}
 
-	buildItem(menuBarTopLevel = false) {
+	buildItem(menuBarTopLevel = false, rebuild = false) {
 		let node = document.createElement('li');
 		node.classList.add('menu-item', this.type);
+
+		menuBarTopLevel = menuBarTopLevel || this.menuBarTopLevel || false;
+		this.menuBarTopLevel = menuBarTopLevel;
 
 		if(menuBarTopLevel) {
 			node.addEventListener('mousedown', this._clickHandle_click_menubarTop.bind(this));
@@ -257,9 +281,21 @@ class MenuItem extends EventEmitter2 {
 		node.appendChild(modifierNode);
 
 		node.title = this.tooltip;
-
-		this.node = node;
+		if(!rebuild) this.node = node;
 		return node;
+	}
+
+	rebuild() {
+		if(!this.node && this.type !== 'separator') return;
+		let newNode;
+
+		newNode = this.buildItem(this.menuBarTopLevel, true);
+
+		if(this.node) {
+			if(this.node.parentNode) this.node.parentNode.replaceChild(newNode, this.node);
+		}
+
+		this.node = newNode;
 	}
 }
 

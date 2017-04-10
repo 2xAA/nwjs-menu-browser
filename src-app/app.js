@@ -185,19 +185,35 @@ menuBar.append(new MenuItem({
 }));
 
 let viewMenu = new Menu();
-viewMenu.append(new MenuItem({
+
+let affectedNode = new MenuItem({
 	label: 'Always Show Bookmarks Bar',
 	key: 'b',
 	modifiers: 'cmd+shift',
 	type: 'checkbox'
-}));
-viewMenu.append(new MenuItem({
-	label: 'Always show toolbar in full screen',
+});
+
+let actionNode = new MenuItem({
+	label: 'Make above node disabled',
 	key: 'f',
 	modifiers: 'cmd+shift',
 	type: 'checkbox',
 	checked: true
-}));
+});
+
+actionNode.on('click', function() {
+	affectedNode.enabled = !affectedNode.enabled;
+
+	if(affectedNode.enabled) {
+		this.label = 'Make above node disabled';
+	} else {
+		this.label = 'Make above node enabled';
+	}
+});
+
+viewMenu.append(affectedNode);
+viewMenu.append(actionNode);
+
 viewMenu.append(new MenuItem({
 	type: 'separator'
 }));
