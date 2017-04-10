@@ -1,0 +1,12 @@
+body {
+	background-image: url(assets/images/pexels-photo-104948.jpeg);
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: 50%;
+}
+
+.menubar,
+.contextmenu {
+	-webkit-backdrop-filter: blur(10px);
+	background-color: rgba(238, 238, 238, 0.8);
+}

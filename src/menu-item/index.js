@@ -1,9 +1,13 @@
 import Menu from '../menu';
 import isDescendant from '../is-decendant';
 import { modifierSymbols, keySymbols } from '../symbols';
+const EventEmitter2 = require('eventemitter2').EventEmitter2;
 
-class MenuItem {
+
+class MenuItem extends EventEmitter2 {
 	constructor(settings = {}) {
+		super();
+
 		const modifiersEnum = ['cmd', 'command', 'super', 'shift', 'ctrl', 'alt'];
 		const typeEnum = ['separator', 'checkbox', 'normal'];
 		let type = isValidType(settings.type) ? settings.type : 'normal';
@@ -14,7 +18,6 @@ class MenuItem {
 		if(submenu) {
 			submenu.parentMenuItem = this;
 		}
-
 
 		Object.defineProperty(this, 'type', {
 			get: () => {
@@ -73,6 +76,10 @@ class MenuItem {
 		this.key = settings.key || null;
 		this.node = null;
 
+		if(this.key) {
+			this.key = this.key.toUpperCase();
+		}
+
 		function validModifiers(modifiersIn = '') {
 			let modsArr = modifiersIn.split('+');
 			for(let i=0; i < modsArr; i++) {
@@ -102,17 +109,58 @@ class MenuItem {
 			this.node.classList.toggle('checked');
 			this.checked = !this.checked;
 		}
+
+		this.emit('click', this);
+
 		if(this.click) this.click();
 	}
 
-	buildItem() {
+	_clickHandle_click_menubarTop() {
+		this.node.classList.toggle('submenu-active');
+
+		if(this.submenu) {
+			if(this.node.classList.contains('submenu-active')) {
+				this.submenu.popup(this.node.offsetLeft, this.node.clientHeight, true, true);
+				this.parentMenu.currentSubmenu = this.submenu;
+			} else {
+				this.submenu.popdown();
+				this.parentMenu.currentSubmenu = null;
+			}
+		}
+	}
+
+	_mouseoverHandle_menubarTop() {
+		if(this.parentMenu.hasActiveSubmenu) {
+			if(this.node.classList.contains('submenu-active')) return;
+
+			this.parentMenu.clearActiveSubmenuStyling(this.node);
+			this.node.classList.add('submenu-active');
+
+			if(this.parentMenu.currentSubmenu) {
+				this.parentMenu.currentSubmenu.popdown();
+				this.parentMenu.currentSubmenu = null;
+			}
+
+			if(this.submenu) {
+				this.submenu.popup(this.node.offsetLeft, this.node.clientHeight, true, true);
+				this.parentMenu.currentSubmenu = this.submenu;
+			}
+		}
+	}
+
+	buildItem(menuBarTopLevel = false) {
 		let node = document.createElement('li');
 		node.classList.add('menu-item', this.type);
 
-		node.addEventListener('click', this._clickHandle_click.bind(this));
-		node.addEventListener('mouseup', (e) => {
-			if(e.button === 2) this._clickHandle_click();
-		});
+		if(menuBarTopLevel) {
+			node.addEventListener('mousedown', this._clickHandle_click_menubarTop.bind(this));
+			node.addEventListener('mouseover', this._mouseoverHandle_menubarTop.bind(this));
+		} else if(this.type !== 'separator') {
+			node.addEventListener('click', this._clickHandle_click.bind(this));
+			node.addEventListener('mouseup', (e) => {
+				if(e.button === 2) this._clickHandle_click();
+			});
+		}
 
 		let iconWrapNode = document.createElement('div');
 		iconWrapNode.classList.add('icon-wrap');
@@ -133,13 +181,13 @@ class MenuItem {
 		let checkmarkNode = document.createElement('div');
 		checkmarkNode.classList.add('checkmark');
 
-		if(this.checked) {
+		if(this.checked && !menuBarTopLevel) {
 			node.classList.add('checked');
 		}
 
 		let text = '';
 
-		if(this.submenu) {
+		if(this.submenu && !menuBarTopLevel) {
 			text = '▶︎';
 
 			node.addEventListener('mouseout', (e) => {
@@ -150,7 +198,7 @@ class MenuItem {
 			});
 		}
 
-		if(this.modifiers) {
+		if(this.modifiers && !menuBarTopLevel) {
 			let mods = this.modifiers.split('+');
 
 			// Looping this way to keep order of symbols - required by macOS
@@ -161,7 +209,7 @@ class MenuItem {
 			}
 		}
 
-		if(this.key) {
+		if(this.key && !menuBarTopLevel) {
 			text += this.key;
 		}
 
@@ -169,28 +217,30 @@ class MenuItem {
 			node.classList.add('disabled');
 		}
 
-		node.addEventListener('mouseover', (e) => {
-			if(this.submenu) {
-				if(this.submenu.node) {
-					if(this.submenu.node.classList.contains('show')) {
-						return;
+		if(!menuBarTopLevel) {
+			node.addEventListener('mouseover', () => {
+				if(this.submenu) {
+					if(this.submenu.node) {
+						if(this.submenu.node.classList.contains('show')) {
+							return;
+						}
+					}
+
+					let parentNode = node.parentNode;
+
+					let x = parentNode.offsetWidth + parentNode.offsetLeft - 2;
+					let y = parentNode.offsetTop + node.offsetTop - 4;
+					this.submenu.popup(x, y, true, menuBarTopLevel);
+					this.parentMenu.currentSubmenu = this.submenu;
+				} else {
+					if(this.parentMenu.currentSubmenu) {
+						this.parentMenu.currentSubmenu.popdown();
+						this.parentMenu.currentSubmenu.parentMenuItem.node.classList.remove('submenu-active');
+						this.parentMenu.currentSubmenu = null;
 					}
 				}
-
-				let parentNode = node.parentNode;
-
-				let x = parentNode.offsetWidth + parentNode.offsetLeft - 2;
-				let y = parentNode.offsetTop + node.offsetHeight;
-				this.submenu.popup(x, y, true);
-				this.parentMenu.currentSubmenu = this.submenu;
-			} else {
-				if(this.parentMenu.currentSubmenu) {
-					this.parentMenu.currentSubmenu.popdown();
-					this.parentMenu.currentSubmenu.parentMenuItem.node.classList.remove('submenu-active');
-					this.parentMenu.currentSubmenu = null;
-				}
-			}
-		});
+			});
+		}
 
 		if(this.icon) labelNode.appendChild(iconWrapNode);
 
