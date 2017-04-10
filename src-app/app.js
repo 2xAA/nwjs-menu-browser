@@ -16,7 +16,7 @@ m.append(new MenuItem({
 }));
 
 m.append(new MenuItem({
-	icon: 'terminal.png',
+	icon: 'assets/images/terminal.png',
 	label: 'Clear console',
 	modifiers: 'cmd+shift+alt',
 	key: 'D',

@@ -10,11 +10,19 @@ My audio visualisation app [modV](http://github.com/2xAA/modV/) recently moved t
 
 Does not support ```createMacBuiltIn```, ```MenuItem.key``` or ```MenuItem.modifiers```, though usage of these will not break existing code and will be displayed in the menu nodes.
 
-The included stylesheet (```nwjs-menu-browser.css```) is a close match to macOS Sierra's menus.
-
-If somebody would like to contribute extra 'themes' I'd be very happy 😘
+These menus are not checked against any OS menu specification, but it's close enough to polyfill for the browser.
+If you'd like more accurate functionality, PRs and enhancement issues are welcome!
 
 ## Usage
+
+### Demo
+
+Run ```npm run watch``` and a browser window pointing to ```localhost:8080``` will open.
+
+### Build
+
+Build using ```npm run build```, ```menu.js``` will be in ```./dist```.
+*Coming to npm soon*
 
 ```HTML
 <head>
@@ -30,3 +38,10 @@ If somebody would like to contribute extra 'themes' I'd be very happy 😘
   </script>
 </body>
 ```
+## Screenshots
+The included stylesheet (```nwjs-menu-browser.css```) is a close match to macOS Sierra's menus.
+If somebody would like to contribute extra 'themes' I'd be very happy 😘
+
+![menu-bar](./assets/images/menu-bar.png)
+
+![menu-bar](./assets/images/context-menu.png)
