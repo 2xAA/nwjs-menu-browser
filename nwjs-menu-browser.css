@@ -52,7 +52,7 @@ html, body {
 .menu-item.normal,
 .menu-item.checkbox {
 	cursor: default;
-	padding: 1px 0 2px;
+	padding: 2px 0;
 	box-sizing: border-box;
 	position: relative;
 	display: flex;
@@ -75,13 +75,15 @@ html, body {
 .menu-item.checkbox > div {
     align-self: center;
     vertical-align: middle;
+    display: inline-flex;
 }
 
 .menu-item.normal .icon {
-    display: inline-block;
+    display: inline-flex;
     vertical-align: middle;
     max-width: 16px;
     max-height: 16px;
+    align-self: center;
 }
 
 li.menu-item.separator {
@@ -129,7 +131,8 @@ li.menu-item.separator {
 
 .menu-item .icon-wrap {
     padding: 0 6px 0 0;
-    display: inline-block;
+    display: inline-flex;
+    align-self: center;
 }
 
 .menu-item .label-text {
