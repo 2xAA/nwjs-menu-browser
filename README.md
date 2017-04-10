@@ -6,6 +6,8 @@ Browser Polyfill for [NWJS](http://docs.nwjs.io/en/latest/) [Menu](http://docs.n
 
 My audio visualisation app [modV](http://github.com/2xAA/modV/) recently moved to NWJS and I had previously built my own (terrible) context menus for the browser. So as not to write two lots of code I thought I'd polyfill the browser so you could use the same code between NWJS and (presumably) Chrome!
 
+This can also be used as a regular Context Menu library if so wished 😎
+
 ## Caveats
 
 Does not support ```createMacBuiltIn```, ```MenuItem.key``` or ```MenuItem.modifiers```, though usage of these will not break existing code and will be displayed in the menu nodes.
