@@ -4,7 +4,7 @@ Browser Polyfill for [NWJS](http://docs.nwjs.io/en/latest/) [Menu](http://docs.n
 
 ## Why
 
-My audio visualisation app [modV](../modV/) recently moved to NWJS and I had previously built my own (terrible) context menus for the browser. So as not to write two lots of code I thought I'd polyfill the browser so you could use the same code between NWJS and (presumably) Chrome!
+My audio visualisation app [modV](/2xAA/modV/) recently moved to NWJS and I had previously built my own (terrible) context menus for the browser. So as not to write two lots of code I thought I'd polyfill the browser so you could use the same code between NWJS and (presumably) Chrome!
 
 ## Caveats
 
