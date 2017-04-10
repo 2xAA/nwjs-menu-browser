@@ -8,7 +8,7 @@ My audio visualisation app [modV](http://github.com/2xAA/modV/) recently moved t
 
 ## Caveats
 
-Does not support ```createMacBuiltIn```, ```MenuItem.key``` or ```MenuItem.modifier```, though usage of these will not break existing code.
+Does not support ```createMacBuiltIn```, ```MenuItem.key``` or ```MenuItem.modifiers```, though usage of these will not break existing code and will be displayed in the menu nodes.
 
 The included stylesheet (```nwjs-menu-browser.css```) is a close match to macOS Sierra's menus.
 
