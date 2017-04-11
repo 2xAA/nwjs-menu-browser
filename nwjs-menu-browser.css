@@ -76,6 +76,8 @@ html, body {
     align-self: center;
     vertical-align: middle;
     display: inline-flex;
+    justify-content: flex-start;
+    flex-shrink: 0;
 }
 
 .menu-item.normal .icon {
