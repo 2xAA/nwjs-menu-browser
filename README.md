@@ -23,7 +23,7 @@ Run ```npm run watch``` and a browser window pointing to ```localhost:8080``` wi
 
 ### Build
 
-Build using ```npm run build```, ```menu.js``` will be in ```./dist```.
+Build using ```npm run build```, built files will be in ```./dist```.
 *Coming to npm soon*
 
 ### Including in your project
@@ -38,9 +38,10 @@ The included stylesheet in `dist` is optional, but you will need some sort of st
 import { Menu, MenuItem } from 'nwjs-menu-browser';
 
 if(!nw) {
-  var nw = {};
-  nw.Menu = Menu;
-  nw.MenuItem = MenuItem;
+  var nw = {
+    Menu,
+    MenuItem
+  };
 }
 ```
 
