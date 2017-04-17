@@ -1,1 +1,4 @@
-# heh
+example-assets/*
+src-app/*
+.jshintrc
+.gitignore

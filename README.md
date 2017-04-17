@@ -20,6 +20,7 @@ If you'd like more accurate functionality, PRs and enhancement issues are welcom
 ### Demo
 
 Run ```npm run watch``` and a browser window pointing to ```localhost:8080``` will open.
+(the demo is not included in the NPM package, please clone from git)
 
 ### Build
 
