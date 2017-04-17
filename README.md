@@ -68,6 +68,6 @@ if(!nw) {
 The included stylesheet (```nwjs-menu-browser.css```) is a close match to macOS Sierra's menus.
 If somebody would like to contribute extra 'themes' I'd be very happy 😘
 
-![menu-bar](./assets/images/menu-bar.png)
+![menu-bar](./example-assets/images/menu-bar.png)
 
-![menu-bar](./assets/images/context-menu.png)
+![menu-bar](./example-assets/images/context-menu.png)
