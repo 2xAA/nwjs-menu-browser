@@ -1,5 +1,4 @@
 const path = require('path');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 module.exports = {
 	entry: {
@@ -9,7 +8,7 @@ module.exports = {
 	output: {
 		filename: '[name].js',
 		path: path.resolve(__dirname, './dist'),
-		libraryTarget: 'commonjs-module'
+		libraryTarget: 'umd'
 	},
 	resolve: {
 		alias: {
@@ -28,7 +27,9 @@ module.exports = {
 			}
 		]
 	},
-	plugins: [
-		new WebpackCleanupPlugin()
-	]
+	devServer: {
+		open: true,
+		contentBase: __dirname,
+		overlay: true
+	}
 };

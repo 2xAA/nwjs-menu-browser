@@ -1,14 +1,18 @@
 import { Menu, MenuItem } from 'nwjs-browser-menu';
 
-let img = new Image();
-let images = ['pexels-photo-104948.jpeg', 'pexels-photo.jpeg', 'sky-earth-space-working.jpg'];
+//const Menu = window.nwjsMenuBrowser.Menu;
+//const MenuItem = window.nwjsMenuBrowser.MenuItem;
+
+let images = ['pexels-photo-104948.jpeg', 'pexels-photo.jpeg', 'sky-earth-space-working.jpg', 'terminal.png'];
 let currentImg = 0;
 
 // preload images
 images.forEach(i => {
-	img.src = 'assets/images/' + i;
+	let img = new Image();
+	img.src = 'example-assets/images/' + i;
+	img.style.display = 'none';
+	document.body.appendChild(img);
 });
-
 
 let m = new Menu();
 m.append(new MenuItem({
@@ -16,7 +20,7 @@ m.append(new MenuItem({
 }));
 
 m.append(new MenuItem({
-	icon: 'assets/images/terminal.png',
+	icon: 'example-assets/images/terminal.png',
 	label: 'Clear console',
 	modifiers: 'cmd+shift+alt',
 	key: 'D',
@@ -47,7 +51,7 @@ let changeWallItem = new MenuItem({
 changeWallItem.on('click', () => {
 	currentImg++;
 	if(currentImg > images.length-1) currentImg = 0;
-	document.body.style.backgroundImage = 'url(assets/images/' + images[currentImg] + ')';
+	document.body.style.backgroundImage = 'url(example-assets/images/' + images[currentImg] + ')';
 });
 
 m.append(changeWallItem);
@@ -104,10 +108,6 @@ document.addEventListener('contextmenu', (e) => {
 	m.popup(e.clientX, e.clientY);
 	return false;
 });
-
-window.Menu = Menu;
-window.MenuItem = MenuItem;
-window.m = m;
 
 let menuBar = new Menu({
 	type: 'menubar'
@@ -288,5 +288,3 @@ menuBar.append(new MenuItem({
 	label: 'View',
 	submenu: viewMenu
 }));
-
-window.menuBar = menuBar;

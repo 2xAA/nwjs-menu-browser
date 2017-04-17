@@ -1,7 +1,4 @@
-@font-face {
-	font-family: 'Arimo';
-	src: url('assets/fonts/Arimo/Arimo-regular.ttf')  format('truetype')
-}
+@import url('https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i');
 
 html, body {
 	margin: 0;

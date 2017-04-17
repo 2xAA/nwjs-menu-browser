@@ -26,19 +26,43 @@ Run ```npm run watch``` and a browser window pointing to ```localhost:8080``` wi
 Build using ```npm run build```, ```menu.js``` will be in ```./dist```.
 *Coming to npm soon*
 
+### Including in your project
+
+The included stylesheet in `dist` is optional, but you will need some sort of style for your menus.
 ```HTML
-<head>
-  <link rel=stylesheet type=text/css href=nwjs-menu-browser.css>
-</head>
-<body>
-  <script>
-    if(!nw) {
-      let nw = {};
-      nw.Menu = require('nwjs-menu-browser').Menu;
-      nw.MenuItem = require('nwjs-menu-browser').MenuItem;
-    }
-  </script>
-</body>
+<link rel=stylesheet type=text/css href=nwjs-menu-browser.css>
+```
+
+#### ES6
+```JavaScript
+import { Menu, MenuItem } from 'nwjs-menu-browser';
+
+if(!nw) {
+  var nw = {};
+  nw.Menu = Menu;
+  nw.MenuItem = MenuItem;
+}
+```
+
+#### ES5
+```JavaScript
+if(!nw) {
+  var nw = {};
+  nw.Menu = require('nwjs-menu-browser').Menu;
+  nw.MenuItem = require('nwjs-menu-browser').MenuItem;
+}
+```
+
+#### Script Tag
+```HTML
+<script src=nwjs-menu-browser.js></script>
+<script>
+if(!nw) {
+  var nw = {};
+  nw.Menu = window.nwjsMenuBrowser.Menu;
+  nw.MenuItem = window.nwjsMenuBrowser.MenuItem;
+}
+</script>
 ```
 ## Screenshots
 The included stylesheet (```nwjs-menu-browser.css```) is a close match to macOS Sierra's menus.

@@ -5,3 +5,7 @@ export {
 	Menu,
 	MenuItem
 };
+
+export default {
+	Menu, MenuItem
+}
