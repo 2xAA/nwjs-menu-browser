@@ -17,15 +17,14 @@ If you'd like more accurate functionality, PRs and enhancement issues are welcom
 
 ## Usage
 
+### Install
+
+`npm i nwjs-menu-browser`
+
 ### Demo
 
 Run ```npm run watch``` and a browser window pointing to ```localhost:8080``` will open.
 (the demo is not included in the NPM package, please clone from git)
-
-### Build
-
-Build using ```npm run build```, built files will be in ```./dist```.
-*Coming to npm soon*
 
 ### Including in your project
 
@@ -66,6 +65,10 @@ if(!nw) {
 }
 </script>
 ```
+
+### Build
+If required, build using ```npm run build```, built files will be in ```./dist```.
+
 ## Screenshots
 The included stylesheet (```nwjs-menu-browser.css```) is a close match to macOS Sierra's menus.
 If somebody would like to contribute extra 'themes' I'd be very happy 😘
