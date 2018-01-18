@@ -2,7 +2,7 @@
   "name": "nwjs-menu-browser",
   "version": "1.0.0",
   "description": "Context Menu and Menu Bar polyfill for writing NWJS compatible menus in the browser",
-  "main": "index.js",
+  "main": "./dist/nwjs-menu-browser.js",
   "dependencies": {
     "eventemitter2": "^4.1.0"
   },
@@ -13,7 +13,8 @@
     "gulp": "^3.9.1",
     "html-webpack-plugin": "^2.28.0",
     "webpack": "^2.3.3",
-    "webpack-dev-server": "^2.4.2"
+    "webpack-dev-server": "^2.4.2",
+    "webpack-stream": "^4.0.0"
   },
   "scripts": {
     "build": "./node_modules/.bin/gulp build",
@@ -35,6 +36,5 @@
     "url": "https://github.com/2xAA/nwjs-menu-browser/issues"
   },
   "homepage": "https://github.com/2xAA/nwjs-menu-browser#readme",
-  "main": "./dist/nwjs-menu-browser.js",
   "module": "./src/index.js"
 }
